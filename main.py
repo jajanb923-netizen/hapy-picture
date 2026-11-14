@@ -1,24 +1,30 @@
-# Ai-happy-01 entry (Python 3.13, standard library only):
-# its picture is the entry.png beside this file, and the program
-# copies it to /output/entry.png. The judge sees exactly the bytes copied.
+# ai-happy-01 entry: a golden retriever puppy leaping to catch a falling
+# autumn leaf in warm golden-hour light. The program copies the picture
+# (entry.png, sitting next to this file) to the output directory.
 #
-# Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
+# Local run:
 #   mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3 main.py
 
 import os
 import shutil
 from pathlib import Path
 
-src = Path(__file__).resolve().parent / "entry.png"
-if not src.is_file():
-    raise SystemExit("entry.png missing from the entry")
-if src.stat().st_size > 1_048_576:
-    raise SystemExit("entry.png is over the 1 MiB limit")
-with src.open("rb") as f:
-    magic = f.read(8)
-if not (magic.startswith(b"\xff\xd8\xff") or magic.startswith(b"\x89PNG\r\n\x1a\n")):
-    raise SystemExit("entry.png is not a JPEG or PNG image")
-out = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")) / "entry.png"
-out.parent.mkdir(parents=True, exist_ok=True)
-shutil.copyfile(src, out)
-print(f"wrote {out} ({out.stat().st_size} bytes)")
+SRC = Path(__file__).resolve().parent / "entry.png"
+MAX_BYTES = 1_048_576
+
+if not SRC.is_file():
+    raise SystemExit("entry.png is missing next to main.py")
+
+if SRC.stat().st_size > MAX_BYTES:
+    raise SystemExit("entry.png is bigger than the 1 MiB limit")
+
+with SRC.open("rb") as fh:
+    header = fh.read(8)
+if not header.startswith(b"\xff\xd8\xff") and header != b"\x89PNG\r\n\x1a\n":
+    raise SystemExit("entry.png is neither a JPEG nor a PNG file")
+
+out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+out_dir.mkdir(parents=True, exist_ok=True)
+dst = out_dir / "entry.png"
+shutil.copyfile(SRC, dst)
+print(f"wrote {dst} ({dst.stat().st_size} bytes)")

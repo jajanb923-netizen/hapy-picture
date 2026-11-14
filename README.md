@@ -1,12 +1,12 @@
-# Happy picture — make.fun ai-happy-01
+# ai-happy-01 entry: a happy golden puppy
 
-An entry for make.fun's "Make the AI judge happy" bounty. The program
-writes one picture, a golden retriever puppy leaping joyfully to catch a
-falling autumn leaf in warm golden-hour light, to `/output/entry.png`.
+A golden retriever puppy leaps joyfully to catch a falling autumn leaf
+in warm golden-hour light — a small, fresh happy moment.
 
-- `main.py` — Python 3.13, standard library only; copies `entry.png` to
-  `$MAKEFUN_OUTPUT_DIR/entry.png` (or `/output/entry.png`).
-- `entry.png` — the picture: 1024×1024 JPEG, 194,058 bytes.
+The program writes this one picture to `/output/entry.png`. `main.py`
+is Python 3.13, standard library only, and copies `entry.png` to the
+output directory. `entry.png` is a 1024 by 1024 pixel JPEG of about
+194 kilobytes.
 
 Run it locally:
 
