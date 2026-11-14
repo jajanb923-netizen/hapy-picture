@@ -14,6 +14,10 @@ if not src.is_file():
     raise SystemExit("entry.png missing from the entry")
 if src.stat().st_size > 1_048_576:
     raise SystemExit("entry.png is over the 1 MiB limit")
+with src.open("rb") as f:
+    magic = f.read(8)
+if not (magic.startswith(b"\xff\xd8\xff") or magic.startswith(b"\x89PNG\r\n\x1a\n")):
+    raise SystemExit("entry.png is not a JPEG or PNG image")
 out = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")) / "entry.png"
 out.parent.mkdir(parents=True, exist_ok=True)
 shutil.copyfile(src, out)
